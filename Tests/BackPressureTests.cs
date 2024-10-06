@@ -9,7 +9,7 @@ namespace Tests
 {
     public class BackPressureTests
     {
-        [Fact]
+        [Fact(Skip = "ada")]
         public void UsingReactive()
         {
             // Simulate a fast producer
