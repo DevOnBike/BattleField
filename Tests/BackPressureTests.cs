@@ -68,13 +68,13 @@ namespace Tests
             using var actorSystem = ActorSystem.Create("MyActorSystem");
 
             // Create a fast source (simulating a fast producer)
-            var producer = Source.From(Enumerable.Range(1, 100)); 
+            var producer = Source.From(Enumerable.Range(1, 100)).Async(); 
             
             // Add a buffer of 10 elements, dropping the oldest element when full
             producer = producer.Buffer(10, OverflowStrategy.Backpressure);
 
             // Create a slow consumer (simulating a slow consumer)
-            var consumer = Sink.ForEachAsync<int>(1, async msg =>
+            var consumer = Sink.ForEachAsync<int>(2, async msg =>
             {
                 // Simulate slow processing (500ms delay per message)
                 _output.WriteLine($"Processing {msg} @ {DateTime.Now:hh:mm:fff}");
