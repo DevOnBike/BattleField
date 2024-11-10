@@ -6,7 +6,7 @@ namespace Benchmark
     {
         private static void Main(string[] args)
         {
-            var summaries = BenchmarkRunner.Run<FileReadingBenchmark>();
+            var summaries = BenchmarkRunner.Run<AsyncExecutionBenchmark>();
 
         }
     }
