@@ -43,9 +43,22 @@ namespace Tests
         {
             using var loader = new InteractiveAssemblyLoader();
 
+            
             var script = CSharpScript.Create<int>("1", assemblyLoader: loader);
             var state = await script.RunAsync();
             var returnValue = state.ReturnValue;
+        }
+        
+        [Fact]
+        public async Task Eval()
+        {
+            var code = @"
+            // This script returns a string
+            return ""Hello, dynamic world!"";
+        ";
+
+            // Dynamically compile and run the code
+            var result = await CSharpScript.EvaluateAsync<string>(code, ScriptOptions.Default);
         }
 
 
