@@ -2,7 +2,7 @@
 {
     public interface IMiddleware
     {
-        Task ExecuteAsync(MiddlewareContext middlewareContext, Task next);
+        Task ExecuteAsync(MiddlewareContext middlewareContext, MiddlewareDelegate next);
     }
 }
 

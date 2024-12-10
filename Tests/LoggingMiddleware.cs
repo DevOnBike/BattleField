@@ -1,14 +1,24 @@
 ﻿using Logic.Pipelining;
+using Xunit.Abstractions;
 
 namespace Tests
 {
     public class LoggingMiddleware : IMiddleware
     {
-        public async Task ExecuteAsync(MiddlewareContext middlewareContext, Task next)
+        private readonly ITestOutputHelper _output;
+
+        public LoggingMiddleware(ITestOutputHelper output)
         {
-            Console.WriteLine($"Request: {middlewareContext.Request}");
-            await next;
-            Console.WriteLine($"Response: {middlewareContext.Response}");
+            _output = output;
+        }
+
+        public async Task ExecuteAsync(MiddlewareContext middlewareContext, MiddlewareDelegate next)
+        {
+            _output.WriteLine($"Request: {middlewareContext.Request}");
+            
+            await next(middlewareContext);
+            
+            _output.WriteLine($"Response: {middlewareContext.Response}");
         }
 
        
