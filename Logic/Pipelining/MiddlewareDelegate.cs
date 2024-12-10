@@ -1,5 +1,5 @@
 ﻿namespace Logic.Pipelining
 {
-    public delegate Task MiddlewareDelegate(MiddlewareContext middlewareContext, Func<Task> next);
+    public delegate Task MiddlewareDelegate(MiddlewareContext middlewareContext);
 }
 
