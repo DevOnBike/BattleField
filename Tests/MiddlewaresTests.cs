@@ -4,7 +4,6 @@ using Xunit.Abstractions;
 
 namespace Tests
 {
-
     public class MiddlewaresTests
     {
         [Fact]
