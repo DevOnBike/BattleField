@@ -11,12 +11,12 @@
 
         public void Use(IMiddleware middleware)
         {
-            Use(new InterfaceMiddlewareBinder(middleware).CreateMiddleware);
+            Use(new InterfaceMiddlewareFactory(middleware).CreateMiddleware);
         }
 
         public MiddlewareDelegate Build()
         {
-            MiddlewareDelegate final = (c) => Task.CompletedTask;
+            MiddlewareDelegate final = (_) => Task.CompletedTask;
 
             for (var i = _middlewares.Count - 1; i >= 0; i--)
             {
@@ -30,9 +30,7 @@
 
         public Task ExecuteAsync(MiddlewareContext middlewareContext)
         {
-            var pipeline = Build();
-            
-            return pipeline(middlewareContext);
+            return Build()(middlewareContext);
         }
     }
 }

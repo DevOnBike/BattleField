@@ -1,7 +1,7 @@
 ﻿using Logic.Pipelining;
 using Xunit.Abstractions;
 
-namespace Tests
+namespace Tests.Pipelining
 {
     public class LoggingMiddleware : IMiddleware
     {
@@ -14,11 +14,11 @@ namespace Tests
 
         public async Task ExecuteAsync(MiddlewareContext middlewareContext, MiddlewareDelegate next)
         {
-            _output.WriteLine($"Request: {middlewareContext.Request}");
+            _output.WriteLine($"Logging request: {middlewareContext.Request}");
             
             await next(middlewareContext);
             
-            _output.WriteLine($"Response: {middlewareContext.Response}");
+            _output.WriteLine($"Logging response: {middlewareContext.Response}");
         }
 
        

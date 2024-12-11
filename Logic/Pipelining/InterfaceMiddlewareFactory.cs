@@ -1,10 +1,10 @@
 ﻿namespace Logic.Pipelining
 {
-    public class InterfaceMiddlewareBinder
+    public class InterfaceMiddlewareFactory
     {
         private readonly IMiddleware _middleware;
 
-        public InterfaceMiddlewareBinder(IMiddleware middleware)
+        public InterfaceMiddlewareFactory(IMiddleware middleware)
         {
             _middleware = middleware;
         }

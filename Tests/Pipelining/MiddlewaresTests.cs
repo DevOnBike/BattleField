@@ -1,7 +1,7 @@
 using Logic.Pipelining;
 using Xunit.Abstractions;
 
-namespace Tests
+namespace Tests.Pipelining
 {
     public class MiddlewaresTests
     {
@@ -12,25 +12,15 @@ namespace Tests
             var pipeline = new MiddlewarePipeline();
             
             pipeline.Use(new LoggingMiddleware(_output));
-            pipeline.Use(new ResponseMiddleware());
-/*
-            pipeline.Use((i) => async (context) =>
+            pipeline.Use(new ResponseMiddleware(_output));
+
+            pipeline.Use(next => async (context) =>
             {
                 _output.WriteLine("Middleware 1: Before");
                 await next(context);
                 _output.WriteLine("Middleware 1: After");
             });
             
-            pipeline.Use((i) => async (context, next) =>
-            {
-                _output.WriteLine("Middleware 2: Before");
-                context.Response = "Handled by Middleware 2";
-                
-                await next;
-                
-                _output.WriteLine("Middleware 2: After");
-            });
-*/
             // Create a context
             var context = new MiddlewareContext { Request = "Example Request" };
 
@@ -38,7 +28,7 @@ namespace Tests
             await pipeline.ExecuteAsync(context);
 
             // assert
-            Assert.True(context.Response == "Processed by ResponseMiddleware");
+            Assert.Equal("Processed by ResponseMiddleware", context.Response);
 
         }
 
