@@ -1,2 +1,12 @@
-# My Battle Field
+# DevOnBike's Battle Field
+
+benchmarks:
+- async calls
+- plinq 
+- file reading
+
+other:
+- random data generators
+- middleware engine
+
 

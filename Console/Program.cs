@@ -1,10 +1,10 @@
 ﻿namespace Console
 {
-    public class Program
+    public static class Program
     {
         public static async Task Main(string[] args)
         {
-            System.Console.Title = "Marcin's challenge";
+            System.Console.Title = "DevOnBike console of doom";
 
             var token = CancellationToken.None;
 
