@@ -24,10 +24,10 @@ namespace Tests
                 _output.WriteLine($"Processing batch of {batch.Count} items");
                 Thread.Sleep(2000); // Simulate slow processing
             });
-            
-            
+
+
         }
-        
+
         [Fact]
         public async Task UsingDataflowBlocks()
         {
@@ -62,14 +62,43 @@ namespace Tests
         }
 
         [Fact]
+        public async Task InfiniteStreamWithAkkaNet()
+        {
+            using var actorSystem = ActorSystem.Create("MyActorSystem");
+            using var materializer = actorSystem.Materializer();
+
+            var actorSource = Source.ActorRef<string>(100, OverflowStrategy.DropHead);
+            var (actorRef, source) = actorSource.PreMaterialize(materializer);
+            var reponses = source
+                .Via(Flow.Create<string>())
+                .RunAsAsyncEnumerable(materializer);
+
+            actorRef.Tell("hit1");
+            actorRef.Tell("hit2");
+            actorRef.Tell("hit3");
+
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+
+            // pass source around for materialization
+            // await source.RunWith(Sink.ForEach<string>(_output.WriteLine), materializer);
+
+            await foreach (var response in reponses.WithCancellation(cts.Token))
+            {
+                _output.WriteLine(response);
+            }
+
+            _output.WriteLine("stream completed");
+        }
+
+        [Fact]
         public async Task UsingAkkaNet()
         {
             // Create the actor system
             using var actorSystem = ActorSystem.Create("MyActorSystem");
 
             // Create a fast source (simulating a fast producer)
-            var producer = Source.From(Enumerable.Range(1, 100)).Async(); 
-            
+            var producer = Source.From(Enumerable.Range(1, 100)).Async();
+
             // Add a buffer of 10 elements, dropping the oldest element when full
             producer = producer.Buffer(10, OverflowStrategy.Backpressure);
 
@@ -78,7 +107,7 @@ namespace Tests
             {
                 // Simulate slow processing (500ms delay per message)
                 _output.WriteLine($"Processing {msg} @ {DateTime.Now:hh:mm:fff}");
-                
+
                 await Task.Delay(500); // Slow processing  
             });
 
@@ -86,11 +115,11 @@ namespace Tests
             await producer.RunWith(consumer, actorSystem);
 
             _output.WriteLine("stream completed");
-            
+
             // Shutdown the actor system after you're done
             await actorSystem.Terminate();
         }
-        
+
         private readonly ITestOutputHelper _output;
 
         public BackPressureTests(ITestOutputHelper output)
