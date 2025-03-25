@@ -6,7 +6,7 @@ namespace Benchmark
     {
         private static void Main(string[] args)
         {
-            var summaries = BenchmarkRunner.Run<AsyncExecutionBenchmark>();
+            var summaries = BenchmarkRunner.Run<ThrowingExceptionsBenchmark>();
 
         }
     }

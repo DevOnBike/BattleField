@@ -11,7 +11,7 @@ namespace Benchmark
     [GcForce]
     public class ParallelBenchmark
     {
-        private readonly List<Guid> _list = new List<Guid>();
+        private readonly List<Guid> _list = new();
         private readonly Guid _toFind = Guid.NewGuid();
 
         private static readonly ParallelOptions _parallelOptions = new ParallelOptions()
