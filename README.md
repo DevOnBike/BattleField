@@ -4,6 +4,7 @@ benchmarks:
 - async calls
 - plinq 
 - file reading
+- throwing exceptions vs safe approach
 
 other:
 - random data generators
